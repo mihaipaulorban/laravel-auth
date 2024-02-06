@@ -19,21 +19,31 @@ class ProjectController extends Controller
         return view('admin', ['projects' => $projects]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Metodo Create
     public function create()
     {
-        //
+        return view('create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
+    // Metodo Store
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+
+        ]);
+
+        $project = new Project();
+        $project->title = $request->title;
+        $project->description = $request->description;
+
+        $project->save();
+
+        return redirect()->route('admin.projects.index')->with('success', 'Progetto creato con successo!');
     }
+
 
     /**
      * Display the specified resource.
@@ -43,21 +53,29 @@ class ProjectController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Metodo Edit
+    public function edit(Project $project)
     {
-        //
+        return view('edit', compact('project'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+
+    // Metodo Update
+    public function update(Request $request, Project $project)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+        ]);
+
+        $project->title = $request->title;
+        $project->description = $request->description;
+
+        $project->save();
+
+        return redirect()->route('admin.projects.index')->with('success', 'Progetto aggiornato con successo!');
     }
+
 
     /**
      * Remove the specified resource from storage.

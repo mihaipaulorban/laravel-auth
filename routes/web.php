@@ -31,6 +31,13 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
+// Rotta admin
 Route::get('/admin', [ProjectController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('admin');
+
+
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('projects', ProjectController::class);
+});
