@@ -10,8 +10,24 @@
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Descrizione</th>
-                </tr>
-            </thead>
+                    @if (session('created'))
+                        <div class="alert alert-success">
+                            {{ session('created') }}
+                        </div>
+                    @endif
+
+                    @if (session('updated'))
+                        <div class="alert alert-info">
+                            {{ session('updated') }}
+                        </div>
+                    @endif
+
+                    @if (session('deleted'))
+                        <div class="alert alert-warning">
+                            {{ session('deleted') }}
+                        </div>
+                    @endif
+
 
             {{-- Pulsante "Crea" --}}
             <a href="{{ route('admin.projects.create') }}" class="btn btn-success mb-3">Crea Nuovo Progetto</a>
@@ -26,6 +42,13 @@
                         <td>
                             {{-- Pulsante "Modifica" --}}
                             <a href="{{ route('admin.projects.edit', $project->id) }}" class="btn btn-primary">Modifica</a>
+                        </td>
+                        <td>
+                            <form action="{{ route('projects.destroy', $project->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger" type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo progetto?')">Elimina</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

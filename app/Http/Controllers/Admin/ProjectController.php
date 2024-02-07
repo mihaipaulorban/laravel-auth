@@ -41,7 +41,10 @@ class ProjectController extends Controller
 
         $project->save();
 
-        return redirect()->route('admin.projects.index')->with('success', 'Progetto creato con successo!');
+        // Allert per la creazione con successo
+        session()->flash('success', 'Progetto creato con successo!');
+
+        return redirect()->route('admin.projects.index')->with('created', 'Progetto creato con successo!');
     }
 
 
@@ -73,15 +76,18 @@ class ProjectController extends Controller
 
         $project->save();
 
-        return redirect()->route('admin.projects.index')->with('success', 'Progetto aggiornato con successo!');
+        // Imposta un messaggio flash per l'aggiornamento con successo
+        return redirect()->route('admin.projects.index')->with('updated', 'Progetto aggiornato con successo.');
     }
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // Rotta per eliminare un progetto
+    public function destroy($id)
     {
-        //
+        $project = Project::findOrFail($id);
+        $project->delete();
+
+        // Messaggio per l'eliminazione
+        session()->flash('deleted', 'Progetto eliminato con successo.');
+
+        return redirect()->route('projects.index');
     }
 }
